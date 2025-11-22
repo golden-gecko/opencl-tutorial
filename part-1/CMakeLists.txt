@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 4.2)
 
 set(PROJECT_NAME "opencl-tutorial-part-1")
 
@@ -8,7 +8,7 @@ add_executable(${PROJECT_NAME} Main.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_EXTENSIONS NO
-    CXX_STANDARD 11
+    CXX_STANDARD 23
     CXX_STANDARD_REQUIRED YES
     VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
