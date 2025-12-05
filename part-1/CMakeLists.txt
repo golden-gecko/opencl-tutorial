@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.2)
 
-set(PROJECT_NAME "opencl-tutorial-part-1")
+set(PROJECT_NAME "part-1")
 
 project(${PROJECT_NAME})
 

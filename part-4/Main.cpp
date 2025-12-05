@@ -135,8 +135,5 @@ int main()
         std::cout << error.what() << "(" << error.err() << ")" << std::endl;
     }
 
-    // Press Enter, to quit application.
-    std::cin.get();
-
     return 0;
 }

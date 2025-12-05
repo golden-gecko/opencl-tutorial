@@ -175,8 +175,5 @@ int main()
     delete[] platformIds;
     delete[] deviceIds;
 
-    // Press Enter, to quit application.
-    std::cin.get();
-
     return 0;
 }

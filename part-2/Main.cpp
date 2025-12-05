@@ -84,8 +84,5 @@ int main()
 	// Free memory.
 	delete[] platformIds;
 
-	// Press Enter, to quit application.
-	std::cin.ignore();
-
 	return 0;
 }
