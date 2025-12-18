@@ -3,7 +3,7 @@
 
 #include <CL/cl.h>
 
-void randomizeArray(cl_int* data, size_t vectorSize)
+static void randomizeArray(cl_int* data, size_t vectorSize)
 {
     for (size_t i = 0; i < vectorSize; ++i) 
     {
@@ -53,7 +53,7 @@ int main()
     // Get device count.
     cl_uint deviceNumber;
 
-    error = clGetDeviceIDs(platformIds[1], CL_DEVICE_TYPE_GPU, 0, NULL, &deviceNumber);
+    error = clGetDeviceIDs(platformIds[0], CL_DEVICE_TYPE_GPU, 0, NULL, &deviceNumber);
 
     if (0 == deviceNumber)
     {
@@ -63,7 +63,7 @@ int main()
     // Get device identifiers.
     cl_device_id* deviceIds = new cl_device_id[deviceNumber];
 
-    error = clGetDeviceIDs(platformIds[1], CL_DEVICE_TYPE_GPU, deviceNumber, deviceIds, &deviceNumber);
+    error = clGetDeviceIDs(platformIds[0], CL_DEVICE_TYPE_GPU, deviceNumber, deviceIds, &deviceNumber);
 
     // Get device info.
     for (cl_uint i = 0; i < deviceNumber; ++i)
