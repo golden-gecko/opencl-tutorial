@@ -13,8 +13,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
-include_directories("lib/OpenCL/include")
+include_directories("../lib/OpenCL/include")
 
-find_library(OpenCL OpenCL.lib "lib/OpenCL/lib")
+find_library(OpenCL OpenCL.lib "../lib/OpenCL/lib")
 
 target_link_libraries(${PROJECT_NAME} debug ${OpenCL} optimized ${OpenCL})
