@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 
+#define CL_TARGET_OPENCL_VERSION 300
+
 #include <CL/cl.h>
 
 static void randomizeArray(cl_int* data, size_t vectorSize)
@@ -11,8 +13,29 @@ static void randomizeArray(cl_int* data, size_t vectorSize)
     }
 }
 
+static void printResults(cl_int* a, cl_int* b, cl_int* c, size_t vectorSize)
+{
+    for (size_t i = 0; i < vectorSize; ++i)
+    {
+        std::cout << a[i] << " + " << b[i] << " = " << c[i] << std::endl;
+    }
+}
+
 int main()
 {
+    std::srand(time(nullptr));
+
+    // Allocate and initialize host arrays.
+    size_t vectorSize = 16;
+    size_t localWorkSize = 8;
+
+    cl_int* a = new cl_int[vectorSize];
+    cl_int* b = new cl_int[vectorSize];
+    cl_int* c = new cl_int[vectorSize];
+
+    randomizeArray(a, vectorSize);
+    randomizeArray(b, vectorSize);
+
     cl_int error = CL_SUCCESS;
 
     // Get platform number.
@@ -87,17 +110,6 @@ int main()
 
     std::cout << std::endl;
 
-    // Allocate and initialize host arrays
-    size_t vectorSize = 32;
-    size_t localWorkSize = 8;
-
-    cl_int* a = new cl_int[vectorSize];
-    cl_int* b = new cl_int[vectorSize];
-    cl_int* c = new cl_int[vectorSize];
-
-    randomizeArray(a, vectorSize);
-    randomizeArray(b, vectorSize);
-
     // Create the OpenCL context.
     cl_context context = clCreateContext(0, deviceNumber, deviceIds, NULL, NULL, NULL);
 
@@ -133,13 +145,12 @@ int main()
     error = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
 
     // Create the kernel.
-    cl_kernel kernel = clCreateKernel(program, "Add", &error);
+    cl_kernel kernel = clCreateKernel(program, "add", &error);
 
-    // Set the Argument values.
+    // Set the argument values.
     error = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void*)&bufferA);
     error = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void*)&bufferB);
     error = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void*)&bufferC);
-    error = clSetKernelArg(kernel, 3, sizeof(cl_int), (void*)&vectorSize);
 
     // Asynchronous write of data to GPU device.
     error = clEnqueueWriteBuffer(commandQueue, bufferA, CL_FALSE, 0, sizeof(cl_int) * vectorSize, a, 0, NULL, NULL);
@@ -151,11 +162,7 @@ int main()
     // Read back results and check accumulated errors.
     error = clEnqueueReadBuffer(commandQueue, bufferC, CL_TRUE, 0, sizeof(cl_int) * vectorSize, c, 0, NULL, NULL);
 
-    // Print results.
-    for (size_t i = 0; i < vectorSize; ++i)
-    {
-        std::cout << a[i] << " + " << b[i] << " = " << c[i] << std::endl;
-    }
+    printResults(a, b, c, vectorSize);
 
     // Cleanup and free memory.
     clFlush(commandQueue);

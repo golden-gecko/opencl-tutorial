@@ -1,11 +1,4 @@
-__kernel void Add(__global int* a, __global int* b, __global int* c, int size)
+__kernel void add(__global int* a, __global int* b, __global int* c)
 {
-    // Find position in global arrays.
-    int n = get_global_id(0);
-
-    // Bound check.
-    if (n < size)
-    {   
-        c[n] = a[n] + b[n];
-    }
+	c[get_global_id(0)] = a[get_global_id(0)] + b[get_global_id(0)];
 }
